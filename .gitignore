@@ -1,0 +1,25 @@
+# Data — never commit raw CSVs or the database
+data/raw/
+data/duckdb/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+.pytest_cache/
+
+# Environment
+.env
+
+# OS
+.DS_Store
+
+# Model artefacts
+python/models/*.pkl
+python/models/*.joblib
+
+# Tableau auto-save
+*.twbr
