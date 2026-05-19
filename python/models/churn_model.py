@@ -25,14 +25,15 @@ from churn_features import load_features
 DB_PATH  = Path(__file__).parent.parent.parent / "data" / "duckdb" / "retail.duckdb"
 MODEL_PATH = Path(__file__).parent / "churn_model.pkl"
 
+# recency_days and r_score are excluded: the churn label is defined as
+# recency_days > 90, so including them causes perfect data leakage (AUC=1.0).
+# The model must learn from purchase behaviour, not from the label definition.
 FEATURES = [
-    "recency_days",
     "frequency",
     "monetary",
     "avg_order_value",
     "unique_products",
     "customer_age_days",
-    "r_score",
     "f_score",
     "m_score",
 ]
