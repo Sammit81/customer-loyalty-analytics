@@ -26,7 +26,7 @@ Online Retail.xlsx (UCI dataset)
     │       Segment labels: High Value · Loyal · At-Risk · Lapsed · Promising · New
     ▼
 [Python ML]  churn_model.py
-    │         Logistic regression on 9 RFM + behavioural features
+    │         Logistic regression on 7 behavioural features (recency excluded to prevent leakage)
     │         Predictions written back to DuckDB: churn_predictions
     ▼
 [Tableau]  Customer health dashboard
@@ -37,17 +37,24 @@ Online Retail.xlsx (UCI dataset)
 
 ## Key Findings
 
-*(To be filled after running the pipeline — update with actual numbers)*
+**Dataset**: 541,909 raw transactions → 397,884 clean (73.4% after removing null CustomerIDs, cancellations, and bad prices). 4,338 unique customers. Dec 2010–Dec 2011, UK-based online retailer. 91% of transactions are from the United Kingdom.
 
-**Dataset**: ~541k transactions, ~4,300 customers (after removing null CustomerIDs), Dec 2010–Dec 2011. UK-based online retailer.
+**RFM Segments**:
 
-**RFM Segments**: Six segments — High Value, Loyal, At-Risk, Lapsed, Promising, New — defined by quartile combinations on recency, frequency, and monetary spend.
+| Segment | Customers | Share | Description |
+|---------|-----------|-------|-------------|
+| High Value | 1,353 | 31.2% | Recent, frequent, high spend (R≥3, F≥3, M≥3) |
+| Lapsed | 947 | 21.8% | Haven't purchased recently (R=1) |
+| New | 655 | 15.1% | 1–2 purchases only |
+| Promising | 568 | 13.1% | Recent but low frequency |
+| At-Risk | 568 | 13.1% | Previously frequent, recency dropping |
+| Loyal | 247 | 5.7% | Frequent buyers not yet at high-value threshold |
 
-**Churn label**: No purchase in the 90 days before dataset end (2011-12-09). ~XX% churn rate.
+**Churn**: 33.4% of customers have churned (no purchase in the 90 days before 2011-12-09). Logistic regression model achieves **ROC-AUC 0.93, 87% accuracy**. Strongest predictor: purchase frequency (f_score coefficient –2.07) — frequent buyers are far less likely to churn. `customer_age_days` has a positive coefficient (+1.97), reflecting that older cohorts have had more time to lapse naturally.
 
-**Cohort retention**: Typical e-commerce pattern — sharp drop after month 0, with a loyal core persisting 6–12 months.
+**Cohort retention**: Month-1 retention ranges from 11–37% across cohorts. The Dec 2010 cohort (885 customers, the largest) retains 36.6% in month 1 — well above average, likely holiday-season shoppers who returned. Retention stabilises at a loyal core of ~5–10% by month 6.
 
-**Campaign uplift**: Holiday window (Nov–Dec 2011) compared against the equivalent 60-day pre-period (Sep–Oct 2011).
+**Campaign uplift** (holiday window Nov–Dec 2011 vs. Sep–Oct 2011): 850 net-new customers acquired post-campaign with average revenue uplift of +£681. Of the 1,058 customers active in both windows, average revenue actually declined by –£247, suggesting the campaign pulled forward spend rather than generating incremental revenue from existing customers.
 
 ---
 
