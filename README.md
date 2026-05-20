@@ -96,16 +96,27 @@ uv run python/models/churn_model.py
 
 ## Dashboard
 
-Built in Tableau Desktop, connecting to `data/duckdb/retail.duckdb`.
+Built in Tableau Desktop, connecting to `data/duckdb/retail.duckdb` via JDBC.
 
-| Page | What it shows |
-|------|--------------|
-| Customer Overview | Segment distribution, total customers, revenue by segment |
-| Cohort Retention | Heatmap: cohort month × period, colour = retention % |
-| Churn Risk | Scatter of customers by churn probability vs. monetary value |
-| Campaign Uplift | Pre/post revenue and order frequency by campaign response group |
+### Segment Distribution
+31% of customers are High Value, 22% have Lapsed — the two largest segments drive the most actionable interventions.
 
-*Screenshots — add after dashboard is built.*
+![Segment Distribution](docs/screenshots/dashboard-segment-distribution.png)
+
+### Cohort Retention Heatmap
+Rows = acquisition month, columns = months since first purchase, colour = retention %. Dec 2010 cohort retains 36.6% in month 1 — well above the 11–22% range for 2011 cohorts, reflecting the stronger holiday-season buyer base.
+
+![Cohort Retention](docs/screenshots/dashboard-cohort-retention.png)
+
+### Churn Risk Scatter
+Each dot = one customer. X = total spend, Y = churn probability, size = purchase frequency. The top-left cluster (low spend, high churn probability) are new/lapsed customers. High-value customers at risk sit top-right — the priority retention targets.
+
+![Churn Risk Scatter](docs/screenshots/dashboard-churn-risk.png)
+
+### Campaign Uplift
+Holiday campaign (Nov–Dec 2011 vs Sep–Oct 2011): +£578K total revenue from 850 new customers acquired, but retained customers spent –£242K less post-campaign, confirming spend was pulled forward rather than grown.
+
+![Campaign Uplift](docs/screenshots/dashboard-campaign-uplift.png)
 
 ---
 
