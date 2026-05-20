@@ -20,6 +20,8 @@ active_by_period AS (
 )
 SELECT
     a.cohort_month,
+    -- Pre-formatted label avoids Tableau generating TIMESTAMPADD (unsupported in DuckDB JDBC)
+    STRFTIME(a.cohort_month, '%b %Y')      AS cohort_label,
     a.period_number,
     cs.cohort_size,
     a.active_customers,
